@@ -84,7 +84,12 @@ public class Board {
     }
 
     public void printBoard() {
-        System.out.println("\n--------------------------");
+
+        System.out.println("-----------------------");
+        System.out.println("Unknown cells: " + this.unknownCells());
+        System.out.println("Possibilites: " + this.possibilites());
+
+        System.out.println("-------------------------");
         for (int r = 0; r < 9; r++) {
             for (int c = 0; c < 9; c++) {
                 if (c % 3 == 0) System.out.print("| ");
@@ -92,8 +97,8 @@ public class Board {
                 else System.out.print("? ");
 
             }
-            if (r % 3 == 2) System.out.println(" |\n|------------------------|");
-            else System.out.println(" |");
+            if (r % 3 == 2) System.out.println("|\n|-----------------------|");
+            else System.out.println("|");
         }
     }
 

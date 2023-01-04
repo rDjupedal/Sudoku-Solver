@@ -16,6 +16,11 @@ public class Game {
 
     public void solve() {
         solve_csp();
+
+        board.getCell(2, 3).print();
+        board.getCell(2, 4).print();
+        board.getCell(2, 5).print();
+
         solveByNum();
     }
 
@@ -137,7 +142,7 @@ public class Game {
             if (possibilites == board.possibilites()) loop = false;
             else possibilites = board.possibilites();
 
-            System.out.println(possibilites);
+//            System.out.println(possibilites);
         }
     }
 

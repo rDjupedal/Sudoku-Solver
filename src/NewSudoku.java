@@ -29,23 +29,18 @@ public class NewSudoku {
 
         Board board = new Board(board2);
 
-        System.out.println("Unknown cells: " + board.unknownCells());
-        System.out.println("Possibilites: " + board.possibilites());
+        System.out.println("\n\n\tBefore solving");
+        board.printBoard();
 
         Game game = new Game(board);
         game.solve();
 
-        System.out.println("-----------------------");
-        System.out.println("Unknown cells: " + board.unknownCells());
-        System.out.println("Possibilites: " + board.possibilites());
-
+        System.out.println("\n\n\tAfter solving");
         board.printBoard();
 
         board.getCell(6, 3).print();
         board.getCell(6, 4).print();
         board.getCell(6, 5).print();
-
-
 
 
     }
