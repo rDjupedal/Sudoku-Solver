@@ -45,11 +45,6 @@ public class Board {
     }
 
     public ArrayList<Cell> getRow(Cell cell) {
-//        ArrayList<Cell> rowList = new ArrayList<>();
-//        for (Cell c : this.cells) {
-//            if (c.getRow() == cell.getRow()) rowList.add(c);
-//        }
-//        return rowList;
         return this.getRow(cell.getRow());
     }
 
@@ -62,11 +57,21 @@ public class Board {
     }
 
     public ArrayList<Cell> getCol(Cell cell) {
+        return this.getCol(cell.getCol());
+    }
+
+    public ArrayList<Cell> getCol(int col) {
         ArrayList<Cell> colList = new ArrayList<>();
         for (Cell c : this.cells) {
-            if (c.getCol() == cell.getCol()) colList.add(c);
+            if (c.getCol() == col) colList.add(c);
         }
         return colList;
+    }
+
+
+    public ArrayList<Cell> getBox(int box) {
+
+        return this.getBox(new Cell(3 * (box / 3), 3 * (box % 3)));
     }
 
     public ArrayList<Cell> getBox(Cell cell) {
@@ -94,7 +99,7 @@ public class Board {
             for (int c = 0; c < 9; c++) {
                 if (c % 3 == 0) System.out.print("| ");
                 if (this.getCell(r, c).known()) System.out.print(this.getCell(r, c).knownValue() + " ");
-                else System.out.print("? ");
+                else System.out.print("_ ");
 
             }
             if (r % 3 == 2) System.out.println("|\n|-----------------------|");
