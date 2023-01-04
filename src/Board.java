@@ -28,6 +28,14 @@ public class Board {
         return this.cells;
     }
 
+    public ArrayList<Cell> getUnknownCells() {
+        ArrayList<Cell> unknown = new ArrayList<>();
+        for (Cell c : this.cells) {
+            if (!c.known()) unknown.add(c);
+        }
+        return unknown;
+    }
+
     public Cell getCell(int r, int c) {
         for (Cell cell : this.cells) {
             if (cell.getRow() == r && cell.getCol() == c) return cell;
@@ -37,9 +45,18 @@ public class Board {
     }
 
     public ArrayList<Cell> getRow(Cell cell) {
+//        ArrayList<Cell> rowList = new ArrayList<>();
+//        for (Cell c : this.cells) {
+//            if (c.getRow() == cell.getRow()) rowList.add(c);
+//        }
+//        return rowList;
+        return this.getRow(cell.getRow());
+    }
+
+    public ArrayList<Cell> getRow(int row) {
         ArrayList<Cell> rowList = new ArrayList<>();
         for (Cell c : this.cells) {
-            if (c.getRow() == cell.getRow()) rowList.add(c);
+            if (c.getRow() == row) rowList.add(c);
         }
         return rowList;
     }

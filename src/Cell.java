@@ -54,14 +54,16 @@ public class Cell {
     public ArrayList<Integer> getValues() { return this.values; }
 
     public ArrayList<Integer> removeValue(int r) {
-//        System.out.println("removing value " + r + " from cell " + this.row + ", " + this.col);
-        for (Integer value : this.values) {
-//            if (value == r) this.values.remove(r);
-            if (this.values.contains(value)) {
-                this.values.remove(this.values.indexOf(r));
-                break;
-            }
-        }
+
+//        for (Integer value : this.values) {
+//            if (this.values.contains(value)) {
+//                this.values.remove(this.values.indexOf(r));
+//                break;
+//            }
+//        }
+
+        if (this.values.contains(r)) this.values.remove((Integer) r);
+
         return this.getValues();
     }
 

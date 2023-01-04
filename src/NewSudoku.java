@@ -41,7 +41,9 @@ public class NewSudoku {
 
         board.printBoard();
 
-
+        board.getCell(6, 3).print();
+        board.getCell(6, 4).print();
+        board.getCell(6, 5).print();
 
 
 
