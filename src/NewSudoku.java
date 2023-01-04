@@ -38,17 +38,5 @@ public class NewSudoku {
         System.out.println("\n\n\tAfter solving");
         board.printBoard();
 
-//        board.getCell(6, 3).print();
-//        board.getCell(6, 4).print();
-//        board.getCell(6, 5).print();
-
-//        for (int t = 0; t < 9; t++) {
-//            System.out.println("TEST BOX " + t);
-//            for (Cell c : board.getBox(t)) {
-//                c.print();
-//            }
-//        }
-
-
     }
 }

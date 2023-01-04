@@ -16,9 +16,20 @@ public class Game {
 
     public void solve() {
 
-        solve_csp();
-        solveByNum();
-        solve_csp();
+        int poss = board.possibilites();
+        boolean loop = true;
+        int iter = 0;
+
+        while (loop) {
+            solve_csp();
+            solveByNum();
+            iter++;
+            if (poss == board.possibilites()) loop = false;
+            else poss = board.possibilites();
+        }
+
+
+        System.out.println("Iterations: " + iter);
 
     }
 
@@ -76,18 +87,10 @@ public class Game {
 
         }
 
-
-
 }
 
 
     private void solve_csp() {
-
-        int possibilites = board.possibilites();
-        boolean loop = true;
-
-        // Repeat as long as the number of possibilites is decreasing
-        while(loop) {
 
             // For each cell
             for (Cell cell : board.getCells()) {
@@ -114,15 +117,8 @@ public class Game {
                         cell.removeValue(c.knownValue());
                     }
                 }
-
             }
-
-            if (possibilites == board.possibilites()) loop = false;
-            else possibilites = board.possibilites();
-
-//            System.out.println(possibilites);
         }
-    }
 
 
 }
