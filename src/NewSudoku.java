@@ -27,7 +27,19 @@ public class NewSudoku {
                 0, 0, 0, 5, 9, 0, 0, 0, 3
         };
 
-        Board board = new Board(board2);
+        int[] board3 = {
+                0, 0, 2, 1, 0, 0, 0, 6, 0,
+                5, 6, 0, 3, 0, 0, 0, 0, 7,
+                0, 0, 8, 0, 0, 5, 0, 0, 0,
+                0, 0, 0, 0, 1, 0, 0, 0, 8,
+                6, 3, 0, 0, 0, 9, 0, 1, 0,
+                0, 2, 0, 0, 0, 0, 0, 0, 0,
+                0, 0, 0, 7, 0, 0, 4, 0, 0,
+                9, 1, 0, 0, 0, 3, 0, 8, 0,
+                0, 0, 5, 0, 0, 0, 0, 0, 0
+        };
+
+        Board board = new Board(board3);
 
         System.out.println("\n\n\tBefore solving");
         board.printBoard();
@@ -37,6 +49,8 @@ public class NewSudoku {
 
         System.out.println("\n\n\tAfter solving");
         board.printBoard();
+
+        System.out.println("Correct solution? " + board.isCorrect());
 
     }
 }

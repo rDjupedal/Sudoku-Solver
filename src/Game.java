@@ -1,6 +1,4 @@
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.*;
 
 /**
  * Sudoku game
@@ -16,23 +14,61 @@ public class Game {
 
     public void solve() {
 
-        int poss = board.possibilites();
-        boolean loop = true;
-        int iter = 0;
+        boolean bigLoop = true;
+        int big_poss = board.possibilites();
 
-        while (loop) {
-            solve_csp();
-            solveByNum();
-            iter++;
-            if (poss == board.possibilites()) loop = false;
-            else poss = board.possibilites();
+        while (bigLoop) {
+
+            int poss = board.possibilites();
+            boolean loop = true;
+            int iter = 0;
+
+            while (loop) {
+                solve_csp();
+                solveByNum();
+                iter++;
+                if (poss == board.possibilites()) loop = false;
+                else poss = board.possibilites();
+            }
+
+            System.out.println("Iterations: " + iter);
+
+            if (!board.solved()) makeGuess();
+
+            if (big_poss == board.possibilites()) bigLoop = false;
+            else big_poss = board.possibilites();
+
         }
-
-
-        System.out.println("Iterations: " + iter);
-
     }
 
+
+    private void makeGuess() {
+        // Store all changes so we can revert back
+        Map<Cell, Integer> removedValues = new HashMap<>();
+
+        Cell cell = null;
+        int lowP = 81;
+
+        // Find the cell with the least number of possible numbers
+        for (Cell c : board.getUnknownCells()) {
+            if (c.getValues().size() < lowP) {
+                cell = c;
+                lowP = c.getValues().size();
+            }
+        }
+        if (cell == null) System.out.println("Error in makeGuess(): Could not find cell with several possibilites");
+
+        cell.print();
+
+        // Guess a value to remove for the cell
+        Random rnd = new Random();
+//        int removeValue = cell.getValues().get(rnd.nextInt(cell.getValues().size() - 1));
+        // todo test
+        int removeValue = 9;
+        cell.removeValue(removeValue);
+        System.out.print("Removed number " + removeValue + " from cell ");
+        cell.print();
+    }
 
     private void solveByNum() {
 

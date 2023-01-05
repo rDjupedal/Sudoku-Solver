@@ -1,4 +1,6 @@
 import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * Sudoku board
@@ -121,6 +123,50 @@ public class Board {
             x += c.getValues().size();
         }
         return x;
+    }
+
+    public boolean solved() {
+
+        for (Cell cell : getCells()) {
+            if (!cell.known()) return false;
+        }
+
+        return true;
+    }
+
+    /**
+     * Checks whether the whole board has correct known values
+     * @return
+     */
+    public boolean isCorrect() {
+
+        // ROWS & CELLS & BOXES
+        for (int x = 0; x < 9; x++) {
+            if (!this.checkCells(this.getRow(x))) return false;
+            if (!this.checkCells(this.getCol(x))) return false;
+            if (!this.checkCells(this.getBox(x))) return false;
+        }
+
+        return true;
+    }
+
+    /**
+     * Checks whether a list of cells contains known values 1-9
+     * @param cells
+     * @return
+     */
+    private boolean checkCells(ArrayList<Cell> cells) {
+
+        Set<Integer> set = new HashSet<>();
+        for (Cell c : cells) {
+            if (c.known()) {
+                if (!set.add(c.knownValue())) return false;
+            }
+            // Uncomment to only accept finished games
+            //else return false;
+        }
+
+        return true;
     }
 
 }
