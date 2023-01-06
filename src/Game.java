@@ -30,9 +30,17 @@ public class Game {
                 }
 
                 loop = false;
-                System.out.println("brute force");
-                bruteForce(board);
 
+                //Make guess
+                makeGuess();
+                while (true) {
+                    if (board.solved()) return;
+                    if (!solve_csp() && !solveByNum()) {
+                        if (!board.solved() || !board.isCorrect()) undoLastGuess();
+                        else loop = false;
+                    }
+                    makeGuess();
+                }
             }
 
             iter++;
@@ -44,7 +52,7 @@ public class Game {
 
         if (b.solved()) {
             System.out.println("-------SOLVED!-------");
-            b.printBoard();
+            System.out.println(b);
             return true;
         }
 
@@ -88,73 +96,13 @@ public class Game {
 
         System.out.println("bruteforce finished");
         System.out.println("correct? " + b.isCorrect());
-        b.printBoard();
+        System.out.println(b);
 
         return false;
 
     }
 
 
-
-//    private void bruteForce(int[][] sBoard) {
-//
-//        for (int row = 0; row < 9; row++) {
-//            for (int col = 0; col < 9; col++) {
-//                if (sBoard[row][col] == 0) {
-//
-//                    int poss[] = {1, 2, 3, 4, 5, 6, 7, 8, 9};
-//
-//
-//
-//                }
-//            }
-//        }
-//
-//    }
-
-//    boolean force() {
-//
-//        for (Cell cell : board.getUnknownCells()) {
-//            for (int num : cell.getValues()) {
-//                // test to remove the number
-//
-//                cell.removeValue(num);
-//                this.guesses.add(new Guess(cell, num));
-//                break;
-//
-//
-//
-//            }
-//        }
-//
-//
-//        // Remove first possible value from first possible cell
-//        Cell rCell = board.getUnknownCells().get(0);
-//        int rNum = rCell.getValues().get(0);
-//        rCell.removeValue(rNum);
-//
-//        // Save the change so that we can restore it if it turns out to be wrong
-//        this.guesses.add(new Guess(rCell, rNum));
-//
-//
-//        // Finished and correct?
-//        if (board.solved()) return true;
-//
-//        // Game is finished but no more alternatives, we failed, go back one step
-//        if (board.getUnknownCells().isEmpty()) return false;
-//
-//        // Check that current board is valid
-//        if (!board.isCorrect()) return false;
-//
-//        if(force()) return true;
-//        else {
-//            // Restore
-//
-//        }
-//
-//
-//
-//    }
 
     private void undoLastGuess() {
         Guess undoGuess = this.guesses.get(this.guesses.size() - 1);
@@ -181,14 +129,13 @@ public class Game {
         }
         if (cell == null) return null;
 
-        cell.print();
-
         // Guess a value to remove for the cell
         int removeValue = cell.getValues().get(rnd.nextInt(cell.getValues().size()-1));
-        // todo test
-        //int removeValue = 9;
+
+        System.out.println("----------------");
+        System.out.print("GUESS: Removing number " + removeValue + " from cell ");
+        cell.print();
         cell.removeValue(removeValue);
-        System.out.print("Removed number " + removeValue + " from cell ");
         cell.print();
 
         Guess newG = new Guess(cell, removeValue);
@@ -253,7 +200,6 @@ public class Game {
         }
 
 }
-
 
     private boolean solve_csp() {
 

@@ -42,13 +42,15 @@ public class NewSudoku {
         Board board = new Board(board3);
 
         System.out.println("\n\n\tBefore solving");
-        board.printBoard();
+        System.out.println(board);
+//        board.printBoard();
 
         Game game = new Game(board);
         game.solve();
 
         System.out.println("\n\n\tAfter solving");
-        board.printBoard();
+        System.out.println(board);
+//        board.printBoard();
 
         System.out.println("Correct solution? " + board.isCorrect());
 
