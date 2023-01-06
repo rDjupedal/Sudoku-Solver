@@ -22,6 +22,14 @@ public class Cell {
         }
     }
 
+    public Cell(int row, int col, int[] values) {
+        this.row = row;
+        this.col = col;
+        for(int i = 0; i < values.length; i++) {
+            this.values.add(values[i]);
+        }
+    }
+
     /**
      * Constructor for Cell with known value
      * @param row
@@ -44,7 +52,7 @@ public class Cell {
         }
         else {
             System.out.println("value not known!");
-            return -2;
+            return -1;
         }
     }
 
@@ -55,16 +63,18 @@ public class Cell {
 
     public ArrayList<Integer> removeValue(int r) {
 
-//        for (Integer value : this.values) {
-//            if (this.values.contains(value)) {
-//                this.values.remove(this.values.indexOf(r));
-//                break;
-//            }
-//        }
-
         if (this.values.contains(r)) this.values.remove((Integer) r);
 
         return this.getValues();
+    }
+
+    public void addValue(int value) {
+        this.values.add(value);
+    }
+
+    public void removeValueIndex(int index) {
+        if (this.values.size() >= index + 1 && index != 0) values.remove(index);
+        else System.out.println("Error in removeValueIndex() no such index");
     }
 
     public boolean contains(int value) {
@@ -80,11 +90,11 @@ public class Cell {
     }
 
     public void print() {
-        System.out.print(this.row + ", " + this.col + ": ");
+        System.out.print("(" + this.row + "," + this.col + ")  { ");
         for (Integer value : this.values) {
             System.out.print(value + " ");
         }
-        System.out.println();
+        System.out.println("}");
     }
 
 }

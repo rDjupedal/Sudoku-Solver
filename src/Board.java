@@ -1,4 +1,5 @@
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -26,8 +27,16 @@ public class Board {
         }
     }
 
+    public Board() {
+
+    }
+
     public ArrayList<Cell> getCells() {
         return this.cells;
+    }
+
+    public void addCell(Cell cell) {
+        this.cells.add(cell);
     }
 
     public ArrayList<Cell> getUnknownCells() {
@@ -125,13 +134,17 @@ public class Board {
         return x;
     }
 
+    /**
+     * Checks if the game is finished and correct
+     * @return
+     */
     public boolean solved() {
 
         for (Cell cell : getCells()) {
             if (!cell.known()) return false;
         }
 
-        return true;
+        return isCorrect();
     }
 
     /**
@@ -145,6 +158,11 @@ public class Board {
             if (!this.checkCells(this.getRow(x))) return false;
             if (!this.checkCells(this.getCol(x))) return false;
             if (!this.checkCells(this.getBox(x))) return false;
+        }
+
+        // Check if any cell is empty
+        for (Cell cell : this.getCells()) {
+            if (cell.getValues().isEmpty()) return false;
         }
 
         return true;
@@ -167,6 +185,65 @@ public class Board {
         }
 
         return true;
+    }
+
+    public int[][] getSimpleBoard() {
+        int[][] board = new int[9][9];
+
+        for (Cell cell : this.getCells()) {
+            int row = cell.getRow();
+            int col = cell.getCol();
+            int num = (cell.known()) ? cell.knownValue() : 0;
+            board[row][col] = num;
+        }
+
+        return board;
+    }
+
+    public Board copy() {
+
+        Board copy = new Board();
+
+        for (Cell oldCell : this.getCells()) {
+
+            int index = 0;
+            int[] values = new int[oldCell.getValues().size()];
+
+            for (int num : oldCell.getValues()) {
+//                System.out.println("Setting index " + index + " to " + num);
+                values[index] = num;
+                index++;
+            }
+
+            Cell newCell = new Cell(oldCell.getRow(), oldCell.getCol(), values);
+
+            copy.addCell(newCell);
+        }
+
+        return copy;
+    }
+
+    public String toString() {
+
+        StringBuilder str = new StringBuilder();
+
+//        str.append("-----------------------");
+        str.append("Unknown cells: " + this.unknownCells());
+        str.append("\nPossibilites: " + this.possibilites());
+
+        str.append("\n-------------------------\n");
+        for (int r = 0; r < 9; r++) {
+            for (int c = 0; c < 9; c++) {
+                if (c % 3 == 0) str.append("| ");
+                if (this.getCell(r, c).known()) str.append(this.getCell(r, c).knownValue() + " ");
+                else str.append("_ ");
+
+            }
+            if (r % 3 == 2) str.append("|\n|-----------------------|\n");
+            else str.append("|\n");
+        }
+
+        return str.toString();
     }
 
 }
