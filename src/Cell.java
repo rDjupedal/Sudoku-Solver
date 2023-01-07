@@ -97,4 +97,31 @@ public class Cell {
         System.out.println("}");
     }
 
+    public String toString() {
+        StringBuilder str = new StringBuilder();
+        str.append("(" + this.row + "," + this.col + ")  { ");
+        for (Integer value : this.values) {
+            str.append(value + " ");
+        }
+        str.append("}\n");
+        return str.toString();
+    }
+
+    public boolean equals(Object o) {
+
+        Cell cell2 = (Cell) o;
+
+        if (this.getRow() != cell2.getRow() || this.getCol() != cell2.getCol()) return false;
+        if (this.values.size() == cell2.values.size()) {
+
+            for (int val : this.values) {
+                if (!cell2.getValues().contains(val)) return false;
+            }
+
+        } else return false;
+
+
+        return true;
+    }
+
 }

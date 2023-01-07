@@ -36,23 +36,26 @@ public class NewSudoku {
                 0, 2, 0, 0, 0, 0, 0, 0, 0,
                 0, 0, 0, 7, 0, 0, 4, 0, 0,
                 9, 1, 0, 0, 0, 3, 0, 8, 0,
-                0, 0, 5, 0, 0, 0, 0, 0, 0
+                0, 0, 5, 0, 0, 0, 0, 0, 2 // <-- change last to 0
         };
+
 
         Board board = new Board(board3);
 
+//        Game game = new Game(board);
+        Solver solver = new Solver();
+
         System.out.println("\n\n\tBefore solving");
         System.out.println(board);
-//        board.printBoard();
 
-        Game game = new Game(board);
-        game.solve();
-
+//        game.solve();
+        board = solver.solve(board);
         System.out.println("\n\n\tAfter solving");
-        System.out.println(board);
-//        board.printBoard();
 
-        System.out.println("Correct solution? " + board.isCorrect());
+
+        if (!board.solved()) System.out.println("No solution.");
+
+        System.out.println(board);
 
     }
 }

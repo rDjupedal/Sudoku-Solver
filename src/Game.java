@@ -8,6 +8,7 @@ public class Game {
 
     private Board board;
     ArrayList<Guess> guesses = new ArrayList<>();
+    ArrayList<Guess> bguesses = new ArrayList<>();
 
     public Game(Board board) {
         this.board = board;
@@ -36,7 +37,10 @@ public class Game {
                 while (true) {
                     if (board.solved()) return;
                     if (!solve_csp() && !solveByNum()) {
-                        if (!board.solved() || !board.isCorrect()) undoLastGuess();
+                        if (!board.solved() || !board.isCorrect()) {
+                            if (!this.guesses.isEmpty()) undoLastGuess();
+                            else return;    // No solution
+                        }
                         else loop = false;
                     }
                     makeGuess();
@@ -102,12 +106,13 @@ public class Game {
 
     }
 
-
-
     private void undoLastGuess() {
         Guess undoGuess = this.guesses.get(this.guesses.size() - 1);
         undoGuess.undo();
+        // Move the guess to bad guesses
+        this.bguesses.add(undoGuess);
         this.guesses.remove(undoGuess);
+        System.out.println("Undoing guess: adding back number " + undoGuess.getnum() + " to " + undoGuess.getCell());
     }
 
 
@@ -120,27 +125,44 @@ public class Game {
         Cell cell = null;
         int lowP = 81;
 
-        // Find the cell with the least number of possible numbers
-        for (Cell c : board.getUnknownCells()) {
-            if (c.getValues().size() < lowP && !c.getValues().isEmpty()) {
-                cell = c;
-                lowP = c.getValues().size();
+        // Generate a list of possible Guesses that have not been tried before
+        ArrayList<Guess> possibleGuesses = new ArrayList<>();
+
+        for (Cell c: board.getUnknownCells()) {
+            for (int val : c.getValues()) {
+                Guess test = new Guess(c, val);
+                if (!bguesses.contains(test)) {
+                    possibleGuesses.add(new Guess(c, val));
+                }
             }
         }
-        if (cell == null) return null;
 
-        // Guess a value to remove for the cell
-        int removeValue = cell.getValues().get(rnd.nextInt(cell.getValues().size()-1));
+
+//        // Find the cell with the least number of possible numbers
+//        for (Guess g : possibleGuesses) {
+//            if (g.getCell().getValues().size() < lowP && !g.getCell().getValues().isEmpty()) {
+//                cell = g.getCell();
+//                lowP = g.getCell().getValues().size();
+//            }
+//        }
+//        if (cell == null) return null;
+//
+//        // Guess a value to remove for the cell
+//        //int removeValue = cell.getValues().get(rnd.nextInt(cell.getValues().size()-1));
+//        int removeValue = cell.getValues().get(rnd.nextInt(cell.getValues().size()));
+
+        // Choose a random Guess
+        Guess randomGuess = possibleGuesses.get(rnd.nextInt(possibleGuesses.size()));
 
         System.out.println("----------------");
-        System.out.print("GUESS: Removing number " + removeValue + " from cell ");
-        cell.print();
-        cell.removeValue(removeValue);
-        cell.print();
+        System.out.print("GUESS: Removing number " + randomGuess.getnum() + " from cell ");
 
-        Guess newG = new Guess(cell, removeValue);
-        this.guesses.add(newG);
-        return newG;
+        randomGuess.getCell().print();
+        randomGuess.getCell().removeValue(randomGuess.getnum());
+        randomGuess.getCell().print();
+
+        this.guesses.add(randomGuess);
+        return randomGuess;
     }
 
     private boolean solveByNum() {
