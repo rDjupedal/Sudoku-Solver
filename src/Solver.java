@@ -1,11 +1,13 @@
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.Random;
-import java.util.Set;
+import java.util.*;
 
 public class Solver {
 
     public Solver() {};
+
+    public Board sol(Board b) {
+        Board solved = solve(b);
+        return (solved != null)? solved : b;
+    }
 
     public Board solve(Board board) {
 
@@ -14,48 +16,34 @@ public class Solver {
         }
 
         // Solve functions have no effect any longer
+        System.out.println("Solve_CSP & solveByNum finished.");
 
         // Is the game solved?
         if (board.solved()) {
+            System.out.println("Solve finished");
             return board;
         }
 
-        // Is the game still legal and have empty cells?
-        if (board.isCorrect() && !board.getUnknownCells().isEmpty()) {
-            Board newBoard = board.copy();
-            // Make a guess to the new board
-            makeGuess(newBoard);
-            System.out.println("test");
-            if (solve(newBoard) != null) return newBoard;
-            else return board;
+        board = brute(board);
+
+        return board;
+    }
+
+    private Board brute(Board board) {
+        Random rnd = new Random();
+        board.printBoard();
+
+        for (int x = 0; x < 1000; x++) {
+            System.out.println(x);
+            Board cBoard = board.copy();
+            Cell cell = cBoard.getUnknownCells().get(rnd.nextInt(cBoard.getUnknownCells().size()));
+            int value = cell.getValues().get(rnd.nextInt(cell.getValues().size()));
+            cell.removeValue(value);
+            while (solve_csp(cBoard) && solveByNum(cBoard));
+            if (cBoard.solved()) return cBoard;
         }
 
         return null;
-    }
-
-    private void makeGuess(Board board) {
-
-        Cell cell = null;
-        int lowP = 81;
-
-        // Find the cell with the least number of possible numbers
-        for (Cell c : board.getUnknownCells()) {
-            if (c.getValues().size() < lowP) {
-                lowP = c.getValues().size();
-                cell = c;
-            }
-        }
-
-        if (cell == null) System.out.println("Error in makeGuess(). No empty cell!");
-
-        int remove = cell.getValues().get(0);
-
-        System.out.println("----------------");
-        System.out.print("GUESS: Removing number " + remove + " from cell ");
-        cell.print();
-        cell.removeValue(remove);
-        cell.print();
-
     }
 
     /**
@@ -134,13 +122,13 @@ public class Solver {
             // Check row
             for (Cell c : board.getRow(cell)) {
                 // Removes possible value from cell if another cell on the same row has this value as known
-                if (c.known() && cell.contains(c.knownValue())  && !cell.known()) cell.removeValue(c.knownValue());
+                if (c.known() && cell.contains(c.knownValue()) && !cell.known()) cell.removeValue(c.knownValue());
             }
 
             // Check col
             for (Cell c : board.getCol(cell)) {
                 // Removes possible value from cell if another cell on the same col has this value as known
-                if (c.known() && cell.contains(c.knownValue())  && !cell.known()) cell.removeValue(c.knownValue());
+                if (c.known() && cell.contains(c.knownValue()) && !cell.known()) cell.removeValue(c.knownValue());
             }
 
             // Check 3x3 box

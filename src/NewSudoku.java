@@ -36,26 +36,24 @@ public class NewSudoku {
                 0, 2, 0, 0, 0, 0, 0, 0, 0,
                 0, 0, 0, 7, 0, 0, 4, 0, 0,
                 9, 1, 0, 0, 0, 3, 0, 8, 0,
-                0, 0, 5, 0, 0, 0, 0, 0, 2 // <-- change last to 0
+                0, 0, 5, 0, 0, 0, 0, 0, 0
         };
 
-
+        long startTime = System.currentTimeMillis();
         Board board = new Board(board3);
 
-//        Game game = new Game(board);
         Solver solver = new Solver();
 
         System.out.println("\n\n\tBefore solving");
         System.out.println(board);
 
-//        game.solve();
-        board = solver.solve(board);
+        board = solver.sol(board);
+
         System.out.println("\n\n\tAfter solving");
 
-
+        System.out.println(board);
         if (!board.solved()) System.out.println("No solution.");
 
-        System.out.println(board);
-
+        System.out.println("Time spent: " + (System.currentTimeMillis() - startTime) + " ms");
     }
 }

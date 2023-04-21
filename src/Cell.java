@@ -103,7 +103,8 @@ public class Cell {
         for (Integer value : this.values) {
             str.append(value + " ");
         }
-        str.append("}\n");
+//        str.append("}\n");
+        str.append("}");
         return str.toString();
     }
 
@@ -124,4 +125,13 @@ public class Cell {
         return true;
     }
 
+    public int compareTo(Cell b) {
+
+        if (this.getValues().size() > b.getValues().size()) return 1;
+        if (this.getValues().size() < b.getValues().size()) return -1;
+//        if (this.getValues().size() == b.getValues().size()) return 0;
+
+//        return this.getValues().size() > b.getValues().size() ? 1 : -1;
+        else return 0;
+    }
 }
